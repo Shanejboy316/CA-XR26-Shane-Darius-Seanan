@@ -1,3 +1,9 @@
-# Godot 4+ specific ignores
-.godot/
-/android/
+.dropbox.attr
+Thumbs.db
+.import/*
+.godot/*
+dev/*
+android/*
+*.import
+*.apk
+*.zip
