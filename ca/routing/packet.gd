@@ -10,6 +10,10 @@ func _init(ip: String) -> void:
 	destination_ip = ip
 
 
+func get_next_hop() -> String:
+	return Network.next_hop_for(current_device, destination_ip)
+
+
 func try_forward(chosen_hop: String) -> bool:
 	if is_delivered() or not Network.is_correct_hop(current_device, destination_ip, chosen_hop):
 		return false
