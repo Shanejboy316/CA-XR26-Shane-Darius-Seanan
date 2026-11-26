@@ -1,0 +1,153 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://routing/demo/routing_board.gd" id="1_board"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoard"]
+bg_color = Color(0.055, 0.09, 0.125, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleTable"]
+content_margin_left = 18.0
+content_margin_top = 12.0
+content_margin_right = 18.0
+content_margin_bottom = 14.0
+bg_color = Color(0.105, 0.168, 0.218, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_left = 8
+corner_radius_bottom_right = 8
+
+[sub_resource type="SystemFont" id="FontTable"]
+font_names = PackedStringArray("Consolas", "Droid Sans Mono", "Noto Sans Mono")
+
+[sub_resource type="Theme" id="ThemeBoard"]
+default_font_size = 24
+Caption/base_type = &"Label"
+Caption/colors/font_color = Color(0.72, 0.81, 0.85, 1)
+Caption/font_sizes/font_size = 20
+
+[node name="RoutingBoard" type="Panel"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("ThemeBoard")
+theme_override_styles/panel = SubResource("StyleBoard")
+script = ExtResource("1_board")
+
+[node name="Scroll" type="ScrollContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 28.0
+offset_top = 24.0
+offset_right = -28.0
+offset_bottom = -24.0
+grow_horizontal = 2
+grow_vertical = 2
+horizontal_scroll_mode = 0
+follow_focus = true
+
+[node name="Layout" type="VBoxContainer" parent="Scroll"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 14
+
+[node name="Status" type="HBoxContainer" parent="Scroll/Layout"]
+layout_mode = 2
+
+[node name="Round" type="Label" parent="Scroll/Layout/Status"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.56, 0.88, 0.84, 1)
+theme_override_font_sizes/font_size = 28
+
+[node name="Score" type="Label" parent="Scroll/Layout/Status"]
+unique_name_in_owner = true
+layout_mode = 2
+horizontal_alignment = 2
+
+[node name="Packet" type="HBoxContainer" parent="Scroll/Layout"]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="Location" type="VBoxContainer" parent="Scroll/Layout/Packet"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Heading" type="Label" parent="Scroll/Layout/Packet/Location"]
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "Current device"
+
+[node name="Current" type="Label" parent="Scroll/Layout/Packet/Location"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+
+[node name="Address" type="VBoxContainer" parent="Scroll/Layout/Packet"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Heading" type="Label" parent="Scroll/Layout/Packet/Address"]
+layout_mode = 2
+theme_type_variation = &"Caption"
+text = "Packet destination IP"
+
+[node name="Destination" type="Label" parent="Scroll/Layout/Packet/Address"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+
+[node name="TableSection" type="PanelContainer" parent="Scroll/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleTable")
+
+[node name="Body" type="VBoxContainer" parent="Scroll/Layout/TableSection"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="Heading" type="Label" parent="Scroll/Layout/TableSection/Body"]
+layout_mode = 2
+text = "Routing table"
+
+[node name="Table" type="Label" parent="Scroll/Layout/TableSection/Body"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = SubResource("FontTable")
+
+[node name="Hint" type="Label" parent="Scroll/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.53, 1)
+autowrap_mode = 3
+
+[node name="Choices" type="HBoxContainer" parent="Scroll/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="LeftChoice" type="Button" parent="Scroll/Layout/Choices"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 62)
+size_flags_horizontal = 3
+
+[node name="RightChoice" type="Button" parent="Scroll/Layout/Choices"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 62)
+size_flags_horizontal = 3
+
+[node name="Feedback" type="Label" parent="Scroll/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="Continue" type="Button" parent="Scroll/Layout"]
+unique_name_in_owner = true
+layout_mode = 2
+custom_minimum_size = Vector2(0, 62)
