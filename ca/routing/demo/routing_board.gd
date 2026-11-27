@@ -1,7 +1,11 @@
 extends Panel
 
+signal board_updated
+
 const SESSION = preload("res://routing/routing_session.gd")
 const NETWORK = preload("res://routing/routing_network.gd")
+
+@export var show_choices := true
 
 var session := SESSION.new()
 var choices: Array[String] = []
@@ -29,11 +33,26 @@ func _show_packet(feedback: String) -> void:
 	%Feedback.text = feedback
 
 	%TableSection.visible = not delivered
-	%Choices.visible = not delivered
-	%Continue.visible = delivered
+	%Choices.visible = show_choices and not delivered
+	%Continue.visible = show_choices and delivered
 	%Continue.text = "Play again" if session.is_finished() else "Next packet"
 	if not delivered:
 		_show_table(packet.current_device)
+	board_updated.emit()
+
+
+func get_target_text(index: int) -> String:
+	if session.packet.is_delivered():
+		return %Continue.text if index == 0 else ""
+	return _device_name(choices[index])
+
+
+func choose_target(index: int) -> void:
+	if session.packet.is_delivered():
+		if index == 0:
+			_continue()
+	else:
+		_choose(index)
 
 
 func _show_table(router: String) -> void:

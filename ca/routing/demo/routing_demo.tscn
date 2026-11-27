@@ -1,0 +1,110 @@
+[gd_scene format=3]
+
+[ext_resource type="Script" path="res://routing/demo/routing_demo.gd" id="1_demo"]
+[ext_resource type="PackedScene" path="res://routing/demo/routing_board.tscn" id="2_board"]
+[ext_resource type="Script" path="res://addons/godot-xr-tools/objects/interactable_body.gd" id="3_target"]
+
+[sub_resource type="ViewportTexture" id="BoardTexture"]
+resource_local_to_scene = true
+viewport_path = NodePath("WorldAnchor/BoardViewport")
+
+[sub_resource type="StandardMaterial3D" id="BoardMaterial"]
+resource_local_to_scene = true
+shading_mode = 0
+albedo_texture = SubResource("BoardTexture")
+texture_filter = 1
+
+[sub_resource type="QuadMesh" id="BoardMesh"]
+resource_local_to_scene = true
+material = SubResource("BoardMaterial")
+size = Vector2(2.16, 1.44)
+
+[sub_resource type="BoxMesh" id="TargetMesh"]
+size = Vector3(1.02, 0.3, 0.24)
+
+[sub_resource type="BoxShape3D" id="TargetShape"]
+size = Vector3(1.02, 0.3, 0.24)
+
+[sub_resource type="StandardMaterial3D" id="LeftMaterial"]
+albedo_color = Color(0.08, 0.38, 0.43, 1)
+
+[sub_resource type="StandardMaterial3D" id="RightMaterial"]
+albedo_color = Color(0.24, 0.27, 0.49, 1)
+
+[sub_resource type="Environment" id="WorldLighting"]
+background_mode = 1
+background_color = Color(0.105, 0.14, 0.175, 1)
+ambient_light_source = 2
+ambient_light_color = Color(0.85, 0.9, 1, 1)
+ambient_light_energy = 0.7
+
+[node name="RoutingDemo" type="Node3D"]
+script = ExtResource("1_demo")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("WorldLighting")
+
+[node name="KeyLight" type="DirectionalLight3D" parent="."]
+rotation = Vector3(-0.55, -0.4, 0)
+light_energy = 0.8
+
+[node name="DesktopCamera" type="Camera3D" parent="."]
+current = true
+fov = 65.0
+
+[node name="XROrigin3D" type="XROrigin3D" parent="."]
+
+[node name="XRCamera3D" type="XRCamera3D" parent="XROrigin3D"]
+
+[node name="WorldAnchor" type="Node3D" parent="."]
+
+[node name="BoardViewport" type="SubViewport" parent="WorldAnchor"]
+disable_3d = true
+size = Vector2i(960, 640)
+render_target_update_mode = 4
+
+[node name="RoutingBoard" parent="WorldAnchor/BoardViewport" instance=ExtResource("2_board")]
+show_choices = false
+
+[node name="Board" type="MeshInstance3D" parent="WorldAnchor"]
+position = Vector3(0, 0.26, -2.05)
+cast_shadow = 0
+mesh = SubResource("BoardMesh")
+
+[node name="LeftTarget" type="StaticBody3D" parent="WorldAnchor"]
+position = Vector3(-0.56, -0.67, -1.95)
+collision_layer = 1048576
+collision_mask = 0
+script = ExtResource("3_target")
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldAnchor/LeftTarget"]
+mesh = SubResource("TargetMesh")
+material_override = SubResource("LeftMaterial")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldAnchor/LeftTarget"]
+shape = SubResource("TargetShape")
+
+[node name="Label" type="Label3D" parent="WorldAnchor/LeftTarget"]
+position = Vector3(0, 0, 0.125)
+pixel_size = 0.0025
+font_size = 46
+outline_size = 4
+
+[node name="RightTarget" type="StaticBody3D" parent="WorldAnchor"]
+position = Vector3(0.56, -0.67, -1.95)
+collision_layer = 1048576
+collision_mask = 0
+script = ExtResource("3_target")
+
+[node name="Mesh" type="MeshInstance3D" parent="WorldAnchor/RightTarget"]
+mesh = SubResource("TargetMesh")
+material_override = SubResource("RightMaterial")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="WorldAnchor/RightTarget"]
+shape = SubResource("TargetShape")
+
+[node name="Label" type="Label3D" parent="WorldAnchor/RightTarget"]
+position = Vector3(0, 0, 0.125)
+pixel_size = 0.0025
+font_size = 46
+outline_size = 4
